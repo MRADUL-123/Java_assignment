@@ -1,0 +1,370 @@
+//IST QUESTION BANK PROBLEM
+import java.util.Scanner;
+
+class Bank {
+    String name;
+    int accno;
+    double p;
+
+    public Bank(String name, int accno, double principal) {
+        this.name = name;
+        this.accno = accno;
+        this.p = principal;
+    }
+
+    public void display() {
+        System.out.println("Name: " + name);
+        System.out.println("Account Number: " + accno);
+        System.out.println("Principal Amount: " + p);
+    }
+}
+
+class Account extends Bank {
+    public Account(String name, int accno, double principal) {
+        super(name, accno, principal);
+    }
+
+    public void deposit(double amt) {
+        p += amt;
+    }
+
+    public void withdraw(double amt) {
+        if (amt > p) {
+            System.out.println("INSUFFICIENT BALANCE");
+        } else {
+            p -= amt;
+            if (p < 500) {
+                // Apply penalty if the balance is less than 500
+                double penalty = (500 - p) / 10;
+                p -= penalty;
+            }
+        }
+    }
+
+    @Override
+    public void display() {
+        super.display();
+    }
+}
+
+public class Main_Bank {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter customer name: ");
+        String name = input.nextLine();
+
+        System.out.print("Enter account number: ");
+        int accno = input.nextInt();
+        input.nextLine(); // Consume the newline character
+
+        System.out.print("Enter principal amount: ");
+        double principal = input.nextDouble();
+        input.nextLine(); // Consume the newline character
+
+        Account account = new Account(name, accno, principal);
+
+        // Display initial details
+        System.out.println("Initial Details:");
+        account.display();
+
+        System.out.print("Enter transaction amount: ");
+        double transactionAmount = input.nextDouble();
+        input.nextLine(); // Consume the newline character
+
+        // Deposit money
+        account.deposit(transactionAmount);
+        System.out.println("After Deposit:");
+        account.display();
+
+        System.out.print("Enter withdrawal amount: ");
+        double withdrawalAmount = input.nextDouble();
+        input.nextLine(); // Consume the newline character
+
+        // Withdraw money
+        account.withdraw(withdrawalAmount);
+        System.out.println("After Withdraw:");
+        account.display();
+
+        input.close();
+    }
+}
+//2ND QUESTION FACTORIAL NUMBER SERIES
+Class Number {
+    int n;
+
+    public Number(int nn) {
+        this.n = nn;
+    }
+
+    int factorial(int a) {
+        if (a == 0) {
+            return 1;
+        } else {
+            return a * factorial(a - 1);
+        }
+    }
+
+    void display() {
+        System.out.println("Number: " + n);
+    }
+}
+
+class Series extends Number {
+    int sum;
+    int[] factorials;
+
+    public Series(int nn) {
+        super(nn);
+        this.sum = 0;
+        this.factorials = new int[nn];
+    }
+
+    void calsum() {
+        for (int i = 1; i <= n; i++) {
+            factorials[i - 1] = factorial(i); // Store factorial in the array
+            sum += factorials[i - 1];
+        }
+    }
+
+    @Override
+    void display() {
+        super.display();
+        System.out.println("Sum of the series: " + sum);
+        System.out.print("Factorials: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(factorials[i] + " ");
+        }
+        System.out.println();
+    }
+}
+
+public class Main_Factorial_SumSeries {
+    public static void main(String[] args) {
+        Series series = new Series(5);
+        series.calsum();
+        series.display();
+    }
+}
+//3RD QUESTION PRODUCT SERIES PROBLEM
+import java.util.Scanner;
+
+class Product {
+    String name;
+    int code;
+    double amount;
+
+    public Product(String n, int c, double p) {
+        name = n;
+        code = c;
+        amount = p;
+    }
+
+    void show() {
+        System.out.println("Product Name: " + name);
+        System.out.println("Product Code: " + code);
+        System.out.println("Sale Amount: " + amount);
+    }
+}
+
+class Sales extends Product {
+    int day;
+    double tax;
+    double totamt;
+
+    public Sales(String n, int c, double p, int d) {
+        super(n, c, p);
+        day = d;
+    }
+
+    void compute() {
+        // Calculate service tax @ 12.4% of the actual sale amount
+        tax = 0.124 * amount;
+
+        // Calculate fine @ 2.5% of the actual sale amount if the payment is overdue
+        if (day > 30) {
+            double fine = 0.025 * amount;
+            amount += fine;
+        }
+
+        // Calculate the total amount paid by the retailer
+        totamt = amount + tax;
+    }
+
+    @Override
+    void show() {
+        super.show(); // Display details from the superclass
+        System.out.println("Number of Days: " + day);
+        System.out.println("Service Tax: " + tax);
+        System.out.println("Total Amount Paid: " + totamt);
+    }
+}
+
+public class Main_Productsales {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter Product Name: ");
+        String name = input.nextLine();
+
+        System.out.print("Enter Product Code: ");
+        int code = input.nextInt();
+
+        System.out.print("Enter Sale Amount: ");
+        double amount = input.nextDouble();
+
+        System.out.print("Enter Number of Days: ");
+        int days = input.nextInt();
+
+        Sales sales = new Sales(name, code, amount, days);
+        sales.compute();
+        sales.show();
+
+        input.close();
+    }
+}
+//4TH QUESTION WORKER WAGE NUMBER
+import java.util.Scanner;
+
+class Worker {
+    String name;
+    double basic;
+
+    public Worker(String name, double basic) {
+        this.name = name;
+        this.basic = basic;
+    }
+
+    void display() {
+        System.out.println("Worker Name: " + name);
+        System.out.println("Basic Pay: " + basic);
+    }
+}
+
+class Wages extends Worker {
+    double hrs;
+    double rate;
+    double wage;
+
+    public Wages(String name, double basic, double hrs, double rate) {
+        super(name, basic);
+        this.hrs = hrs;
+        this.rate = rate;
+    }
+
+    double overtime() {
+        double overtimeHours = Math.max(0, hrs - 40);
+        return overtimeHours * rate;
+    }
+
+    @Override
+    void display() {
+        super.display();
+        System.out.println("Hours Worked: " + hrs);
+        System.out.println("Rate per Hour: " + rate);
+        double overtimeAmount = overtime();
+        wage = basic + overtimeAmount;
+        System.out.println("Overtime Amount: " + overtimeAmount);
+        System.out.println("Monthly Wage: " + wage);
+    }
+}
+
+public class Main_Workerwages {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter Worker Name: ");
+        String name = input.nextLine();
+
+        System.out.print("Enter Basic Pay: ");
+        double basic = input.nextDouble();
+
+        System.out.print("Enter Hours Worked: ");
+        double hoursWorked = input.nextDouble();
+
+        System.out.print("Enter Rate per Hour: ");
+        double ratePerHour = input.nextDouble();
+
+        Wages wages = new Wages(name, basic, hoursWorked, ratePerHour);
+        wages.display();
+
+        input.close();
+    }
+}
+//5TH QUESTION STOCK PROBLEM
+import java.util.Scanner;
+
+class Product {
+    String name;
+    int code;
+    double amount;
+
+    public Product(String n, int c, double p) {
+        name = n;
+        code = c;
+        amount = p;
+    }
+
+    void show() {
+        System.out.println("Product Name: " + name);
+        System.out.println("Product Code: " + code);
+        System.out.println("Sale Amount: " + amount);
+    }
+}
+
+class Sales extends Product {
+    int day;
+    double tax;
+    double totamt;
+
+    public Sales(String n, int c, double p, int d) {
+        super(n, c, p);
+        day = d;
+    }
+
+    void compute() {
+        // Calculate service tax @ 12.4% of the actual sale amount
+        tax = 0.124 * amount;
+
+        // Calculate fine @ 2.5% of the actual sale amount if the payment is overdue
+        if (day > 30) {
+            double fine = 0.025 * amount;
+            amount += fine;
+        }
+
+        // Calculate the total amount paid by the retailer
+        totamt = amount + tax;
+    }
+
+    @Override
+    void show() {
+        super.show(); // Display details from the superclass
+        System.out.println("Number of Days: " + day);
+        System.out.println("Service Tax: " + tax);
+        System.out.println("Total Amount Paid: " + totamt);
+    }
+}
+
+public class Main_Productsales {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter Product Name: ");
+        String name = input.nextLine();
+
+        System.out.print("Enter Product Code: ");
+        int code = input.nextInt();
+
+        System.out.print("Enter Sale Amount: ");
+        double amount = input.nextDouble();
+
+        System.out.print("Enter Number of Days: ");
+        int days = input.nextInt();
+
+        Sales sales = new Sales(name, code, amount, days);
+        sales.compute();
+        sales.show();
+
+        input.close();
+    }
+}
